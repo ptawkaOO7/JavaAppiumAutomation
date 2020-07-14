@@ -16,7 +16,7 @@ public class MainClassTest extends MainClass
     public void testGetClassNumber()
     {
         int a = this.getClassNumber();
-        Assert.assertTrue("a <= 45 and equally " + a, a > 45);
+        Assert.assertTrue("a <= 45", a > 45);
     }
 
     @Test
@@ -24,6 +24,6 @@ public class MainClassTest extends MainClass
     public void testGetClassString()
     {
         String a = this.getClassString();
-        Assert.assertTrue("string '" + a + "' doesn't contain 'hello'", a.toLowerCase().contains("hello"));
+        Assert.assertTrue("string doesn't contain 'hello'", a.toLowerCase().contains("hello"));
     }
 }
