@@ -24,6 +24,6 @@ public class MainClassTest extends MainClass
     public void testGetClassString()
     {
         String a = this.getClassString();
-        Assert.assertTrue("string doesn't contain 'hello'", a.toLowerCase().contains("hello"));
+        Assert.assertTrue("string doesn't contain 'hello'", a.contains("hello") || a.contains("Hello"));
     }
 }
