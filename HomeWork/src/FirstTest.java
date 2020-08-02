@@ -136,7 +136,6 @@ public class FirstTest {
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
-
         );
     }
 
