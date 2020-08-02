@@ -11,6 +11,7 @@ import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 
 import java.net.URL;
+import java.util.List;
 
 public class FirstTest {
 
@@ -103,12 +104,39 @@ public class FirstTest {
         );
     }
 
+    @Test
+    public void testCompareSearchResults()
+    {
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_container"),
+                "Cannot find 'Search Wikipedia' input"
+        );
+
+        waitForElementAndSendKeys(
+                By.id("org.wikipedia:id/search_src_text"),
+                "selenium",
+                "Cannot find search input"
+        );
+
+        waitForElementPresent(
+                By.id("org.wikipedia:id/search_results_list"),
+                "No results found"
+        );
+
+        assertAllElementsContainText(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_title']"),
+                "selenium",
+                5
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
         wait.withMessage(error_message + "\n");
         return wait.until(
                 ExpectedConditions.presenceOfElementLocated(by)
+
         );
     }
 
@@ -168,5 +196,27 @@ public class FirstTest {
         return wait.until(
                 ExpectedConditions.invisibilityOfElementLocated(by)
         );
+    }
+
+    private List<WebElement> waitForALLElementsPresent(By by, long timeoutSeconds)
+    {
+        WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
+        wait.withMessage("No results found\n");
+        return wait.until(
+                ExpectedConditions.presenceOfAllElementsLocatedBy(by)
+        );
+    }
+
+    private List<WebElement> assertAllElementsContainText(By by, String expected_text, long timeoutSeconds)
+    {
+        List<WebElement> elements = waitForALLElementsPresent(by, timeoutSeconds);
+        for(WebElement element : elements){
+            String item_title = element.getAttribute("text");
+            Assert.assertTrue(
+                    "String " + item_title + " doesn't contain " + expected_text,
+                    item_title.toLowerCase().contains(expected_text)
+            );
+        }
+        return elements;
     }
 }
