@@ -43,15 +43,13 @@ public class FirstTest {
     {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input",
-                5
+                "Cannot find 'Search Wikipedia' input"
         );
 
         assertElementHasText(
                 By.id("org.wikipedia:id/search_src_text"),
                 "Search…",
-                "Cannot find placeholder 'Search…' in the search toolbar",
-                5
+                "Cannot find placeholder 'Search…' in the search toolbar"
         );
     }
 
@@ -60,21 +58,18 @@ public class FirstTest {
     {
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_container"),
-                "Cannot find 'Search Wikipedia' input",
-                5
+                "Cannot find 'Search Wikipedia' input"
         );
 
         waitForElementAndSendKeys(
                 By.id("org.wikipedia:id/search_src_text"),
                 "selenium",
-                "Cannot find search input",
-                5
+                "Cannot find search input"
         );
 
         waitForElementPresent(
                 By.id("org.wikipedia:id/search_results_list"),
-                "No results found",
-                5
+                "No results found"
         );
 
         assertElementContainText(
@@ -82,14 +77,12 @@ public class FirstTest {
                         "//*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container'][2]//*[@resource-id='org.wikipedia:id/page_list_item_title']"
                 ),
                 "selenium",
-                "Cannot find 'selenium' in the search results",
-                5
+                "Cannot find 'selenium' in the search results"
         );
 
         waitForElementAndClear(
                 By.id("org.wikipedia:id/search_src_text"),
-                "Cannot find search field",
-                5
+                "Cannot find search field"
         );
 
         waitForElementNotPresent(
@@ -100,8 +93,7 @@ public class FirstTest {
 
         waitForElementAndClick(
                 By.id("org.wikipedia:id/search_close_btn"),
-                "Cannot find X to cancel search",
-                5
+                "Cannot find X to cancel search"
         );
 
         waitForElementNotPresent(
@@ -120,23 +112,28 @@ public class FirstTest {
         );
     }
 
-    private WebElement waitForElementAndClick(By by, String error_message, long timeoutSeconds)
+    private WebElement waitForElementPresent(By by, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutSeconds);
+        return waitForElementPresent(by, error_message, 5);
+    }
+
+    private WebElement waitForElementAndClick(By by, String error_message)
+    {
+        WebElement element = waitForElementPresent(by, error_message);
         element.clear();
         return element;
     }
 
-    private WebElement waitForElementAndSendKeys(By by, String value, String error_message, long timeoutSeconds)
+    private WebElement waitForElementAndSendKeys(By by, String value, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutSeconds);
+        WebElement element = waitForElementPresent(by, error_message);
         element.sendKeys(value);
         return element;
     }
 
-    private WebElement assertElementHasText(By by, String expected_placeholder_text, String error_message, long timeoutSeconds)
+    private WebElement assertElementHasText(By by, String expected_placeholder_text, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutSeconds);
+        WebElement element = waitForElementPresent(by, error_message);
         String placeholder_text = element.getAttribute("text");
         Assert.assertEquals(
                 error_message,
@@ -146,9 +143,9 @@ public class FirstTest {
         return element;
     }
 
-    private WebElement assertElementContainText(By by, String expected_text, String error_message, long timeoutSeconds)
+    private WebElement assertElementContainText(By by, String expected_text, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutSeconds);
+        WebElement element = waitForElementPresent(by, error_message);
         String item_title = element.getAttribute("text");
         Assert.assertTrue(
                 error_message,
@@ -157,9 +154,9 @@ public class FirstTest {
         return element;
     }
 
-    private WebElement waitForElementAndClear(By by, String error_message, long timeoutInSeconds)
+    private WebElement waitForElementAndClear(By by, String error_message)
     {
-        WebElement element = waitForElementPresent(by, error_message, timeoutInSeconds);
+        WebElement element = waitForElementPresent(by, error_message);
         element.clear();
         return element;
     }
