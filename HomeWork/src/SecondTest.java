@@ -158,6 +158,34 @@ public class SecondTest {
                 5
         );
 
+        WebElement item_title = waitForElementPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find saved article title",
+                15
+        );
+
+        String item_title_text = item_title.getAttribute("text");
+
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find saved article",
+                5
+        );
+
+        WebElement title_element = waitForElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title",
+                15
+        );
+
+        String article_title = title_element.getAttribute("text");
+
+        Assert.assertEquals(
+                "We see unexpected title",
+                item_title_text,
+                article_title
+        );
+
     }
 
     private WebElement waitForElementPresent(By by, String error_message, long timeoutSeconds)
