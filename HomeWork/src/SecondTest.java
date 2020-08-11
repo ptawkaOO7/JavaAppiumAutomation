@@ -188,6 +188,41 @@ public class SecondTest {
 
     }
 
+    @Test
+    public void assertTitle()
+    {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find 'Search Wikipedia' input",
+                5
+        );
+
+        String search_line = "Java";
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                search_line,
+                "Cannot find search input",
+                5
+        );
+
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' topic searching by " + search_line,
+                5
+        );
+
+        waitForElementPresent(
+                By.xpath("//android.widget.ImageButton[@content-desc='Navigate up']"),
+                "Cannot open article, cannot find X link",
+                5
+        );
+
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_text"),
+                "Cannot find article title"
+        );
+    }
+
     private WebElement waitForElementPresent(By by, String error_message, long timeoutSeconds)
     {
         WebDriverWait wait = new WebDriverWait(driver, timeoutSeconds);
@@ -272,5 +307,14 @@ public class SecondTest {
                 .moveTo(left_x, middle_y)
                 .release()
                 .perform();
+    }
+
+    private void assertElementPresent(By by, String error_message)
+    {
+        int amountOfElements = getAmountOfElements(by);
+        if (amountOfElements < 1) {
+            String default_message = "An element '" + by.toString() + "' should be present";
+            throw new AssertionError(default_message + " " + error_message);
+        }
     }
 }
