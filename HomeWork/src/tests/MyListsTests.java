@@ -28,7 +28,7 @@ public class MyListsTests extends CoreTestCase
         MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
         MyListsPageObject.openFolderByName(name_of_folder);
         String title = "JavaScript";
-        int amount_of_search_results = MyListsPageObject.getAmountOfElements(title);
+        int amount_of_search_results = MyListsPageObject.getAmountsOfElements(title);
 
         Assert.assertTrue(
                 "We don't find some of the articles in Your list",

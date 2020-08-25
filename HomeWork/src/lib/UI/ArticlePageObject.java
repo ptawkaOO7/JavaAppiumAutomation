@@ -1,14 +1,13 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
 public class ArticlePageObject extends MainPageObject
 {
     private static final String
-            TITLE = "org.wikipedia:id/view_page_title_text",
-            CLOSE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+            TITLE = "id:org.wikipedia:id/view_page_title_text",
+            CLOSE_BUTTON = "xpath://android.widget.ImageButton[@content-desc='Navigate up']";
 
     public ArticlePageObject(AppiumDriver driver)
     {
@@ -17,7 +16,7 @@ public class ArticlePageObject extends MainPageObject
 
     public WebElement waitForTitleElement()
     {
-        return this.waitForElementPresent(By.id(TITLE), "Cannot find article title on page", 15);
+        return this.waitForElementPresent(TITLE, "Cannot find article title on page", 15);
     }
 
     public String getArticleTitle()
@@ -29,13 +28,13 @@ public class ArticlePageObject extends MainPageObject
     public void assertTitlePresent()
     {
         this.waitForElementPresent(
-                By.xpath(CLOSE_BUTTON),
+                CLOSE_BUTTON,
                 "Cannot open article, cannot find X link",
                 5
         );
 
         this.assertElementPresent(
-                By.id(TITLE),
+                TITLE,
                 "Cannot find article title"
         );
     }
