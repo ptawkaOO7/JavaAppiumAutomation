@@ -1,35 +1,50 @@
 package tests;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.UI.ArticlePageObject;
 import lib.UI.MyListsPageObject;
 import lib.UI.NavigationUi;
 import lib.UI.SearchPageObject;
+import lib.UI.factories.ArticlePageObjectFactory;
+import lib.UI.factories.MyListsPageObjectFactory;
+import lib.UI.factories.NavigationUiFactory;
+import lib.UI.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase
 {
+    private static final String name_of_folder = "Learning programming";
     @Test
     public void testSaveFirstArticleToMyList()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         SearchPageObject.typeSearchLine("Java");
         SearchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject ArticlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject ArticlePageObject = ArticlePageObjectFactory.get(driver);
         ArticlePageObject.waitForTitleElement();
         String article_title = ArticlePageObject.getArticleTitle();
-        String name_of_folder = "Learning programming";
-        ArticlePageObject.addArticleToMyList(name_of_folder);
+
+        if (Platform.getInstance().isAndroid()){
+            ArticlePageObject.addArticleToMyList(name_of_folder);
+        } else {
+            ArticlePageObject.addArticlesToMySaved();
+        }
+
         ArticlePageObject.closeArticle();
 
-        NavigationUi NavigationUi = new NavigationUi(driver);
+        NavigationUi NavigationUi = NavigationUiFactory.get(driver);
         NavigationUi.clickMyLists();
 
-        MyListsPageObject MyListsPageObject = new MyListsPageObject(driver);
-        MyListsPageObject.openFolderByName(name_of_folder);
+        MyListsPageObject MyListsPageObject = MyListsPageObjectFactory.get(driver);
+
+        if(Platform.getInstance().isAndroid()){
+            MyListsPageObject.openFolderByName(name_of_folder);
+        }
+
         MyListsPageObject.swipeByArticleToDelete(article_title);
     }
 }
