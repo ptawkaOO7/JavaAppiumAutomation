@@ -3,24 +3,24 @@ package lib.UI;
 import io.appium.java_client.AppiumDriver;
 import org.openqa.selenium.By;
 
-public class SearchPageObject extends MainPageObject
+abstract public class SearchPageObject extends MainPageObject
 {
-    private static final String
-            SEARCH_INIT_ELEMENT = "xpath://*[contains(@text, 'Search Wikipedia')]",
-            SEARCH_INPUT = "xpath://*[contains(@text, 'Search…')]",
-            PLACEHOLDER_TEXT = "id:org.wikipedia:id/search_src_text",
-            SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            SEARCH_RESULT_LIST = "id:org.wikipedia:id/search_results_list",
-            SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-            SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
-            ITEM_TITLE = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_title']",
-            FIRST_ITEM_TITLE = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']//*[@resource-id='org.wikipedia:id/page_list_item_container'][1]//*[@resource-id='org.wikipedia:id/page_list_item_title']",
-            OPTIONS_ADD_TO_MY_LIST_BUTTON = "xpath://*[@text='Add to reading list']",
-            ADD_TO_MY_LIST_OVERLAY = "id:org.wikipedia:id/onboarding_button",
-            MY_LIST_NAME_INPUT = "id:org.wikipedia:id/text_input",
-            MY_LIST_OK_BUTTON = "xpath://*[@text='OK']",
-            MY_LIST_NAME_TPL = "xpath://*[@text='{SUBSTRING}']",
-            BACK_BUTTON = "xpath://*[@class='android.widget.ImageButton']";
+    protected static String
+            SEARCH_INIT_ELEMENT,
+            SEARCH_INPUT,
+            PLACEHOLDER_TEXT,
+            SEARCH_RESULT_ELEMENT,
+            SEARCH_RESULT_LIST,
+            SEARCH_CANCEL_BUTTON,
+            SEARCH_RESULT_BY_SUBSTRING_TPL,
+            ITEM_TITLE,
+            FIRST_ITEM_TITLE,
+            OPTIONS_ADD_TO_MY_LIST_BUTTON,
+            ADD_TO_MY_LIST_OVERLAY,
+            MY_LIST_NAME_INPUT,
+            MY_LIST_OK_BUTTON,
+            MY_LIST_NAME_TPL,
+            BACK_BUTTON;
 
     public SearchPageObject(AppiumDriver driver)
     {
@@ -137,6 +137,16 @@ public class SearchPageObject extends MainPageObject
                 "Cannot press OK button",
                 5
         );
+    }
+
+    public void addArticlesToMySaved(String substring)
+    {
+        String search_result_xpath = getResultSearchElement(substring);
+        this.swipeElementToLeft(
+                search_result_xpath,
+                "Cannot find article by name"
+        );
+        this.waitForElementAndClick(OPTIONS_ADD_TO_MY_LIST_BUTTON, "Cannot find option to add article to reading list", 5);
     }
 
     public void addArticleToExistingList(String search_line, String substring, String name_of_folder)

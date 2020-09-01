@@ -2,6 +2,7 @@ package tests;
 
 import lib.CoreTestCase;
 import lib.UI.SearchPageObject;
+import lib.UI.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase
@@ -9,7 +10,7 @@ public class SearchTests extends CoreTestCase
     @Test
     public void testCompareSearchResults()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         String search_line = "selenium";
@@ -20,7 +21,7 @@ public class SearchTests extends CoreTestCase
     @Test
     public void testSearchArticlesAndCancel()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         String search_line = "selenium";
@@ -40,7 +41,7 @@ public class SearchTests extends CoreTestCase
     @Test
     public void testComparePlaceholderText()
     {
-        SearchPageObject SearchPageObject = new SearchPageObject(driver);
+        SearchPageObject SearchPageObject = SearchPageObjectFactory.get(driver);
 
         SearchPageObject.initSearchInput();
         String expected_placeholder_text = "Search…";

@@ -1,17 +1,20 @@
 package lib.UI;
 
 import io.appium.java_client.AppiumDriver;
+import lib.Platform;
+import org.junit.Assert;
 import org.openqa.selenium.WebElement;
 
-public class MyListsPageObject extends MainPageObject
+abstract public class MyListsPageObject extends MainPageObject
 {
 
-    public static final String
-            FOLDER_BY_NAME_TPL = "xpath://*[@resource-id='org.wikipedia:id/reading_list_list']//*[@text='{FOLDER_NAME}']",
-            SNACK_BAR = "id:org.wikipedia:id/snackbar_text",
-            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']",
-            ARTICLE_SEARCH_RESULTS = "xpath://*[@resource-id='org.wikipedia:id/reading_list_contents']//*[@resource-id='org.wikipedia:id/page_list_item_container']",
-            ARTICLE_TITLE = "id:org.wikipedia:id/page_list_item_title";
+    protected static String
+            FOLDER_BY_NAME_TPL,
+            SNACK_BAR,
+            ARTICLE_BY_TITLE_TPL,
+            ARTICLE_SEARCH_RESULTS,
+            DELETE_BUTTON,
+            ARTICLE_TITLE;
 
     public MyListsPageObject(AppiumDriver driver)
     {
@@ -73,12 +76,19 @@ public class MyListsPageObject extends MainPageObject
                 title_xpath,
                 "Cannot find saved article"
         );
+        if(Platform.getInstance().isIos()){
+            waitForElementAndClick(DELETE_BUTTON, "Cannot find delete button", 5);
+        }
         this.waitForArticleToDisappearByTitle(article_title);
     }
 
-    public int getAmountsOfElements(String article_title)
+    public int getAmountsOfArticles(String article_title)
     {
         this.waitForArticleToAppearByTitle(article_title);
+        return this.getAmountOfElements(ARTICLE_SEARCH_RESULTS);
+    }
+
+    public int getAmountOfElements(){
         return this.getAmountOfElements(ARTICLE_SEARCH_RESULTS);
     }
 
@@ -99,6 +109,16 @@ public class MyListsPageObject extends MainPageObject
                 ARTICLE_TITLE,
                 "Cannot find saved article",
                 5
+        );
+    }
+
+    public void assertArticlesSubtitle(String article_title, String expected_subtitle)
+    {
+        this.waitForElementPresent(ARTICLE_TITLE,"Cannot find article by substring " + ARTICLE_TITLE, 5);
+        Assert.assertEquals(
+                "We see unexpected title",
+                expected_subtitle,
+                article_title
         );
     }
 }
